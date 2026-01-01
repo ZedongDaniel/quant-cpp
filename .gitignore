@@ -1,0 +1,7 @@
+__pycache__/
+.vscode/
+QuantCpp.egg-info/
+*.so
+*.DS_Store
+*.md
+*.ipynb
