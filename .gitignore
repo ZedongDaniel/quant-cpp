@@ -1,6 +1,7 @@
 __pycache__/
 .vscode/
 QuantCpp.egg-info/
+build/
 *.so
 *.DS_Store
 *.md
