@@ -1,10 +1,31 @@
 from setuptools import setup, find_packages
 from pybind11.setup_helpers import Pybind11Extension, build_ext
+import sys
+import platform
 
-openmp_include = "/opt/homebrew/opt/libomp/include"
-openmp_lib = "/opt/homebrew/opt/libomp/lib"
-openmp_compile_args = ['-Xpreprocessor', '-fopenmp']
-openmp_link_args = ['-lomp']
+# Detect platform
+is_macos = platform.system() == "Darwin"
+is_linux = platform.system() == "Linux"
+
+# Platform-specific OpenMP configuration
+if is_macos:
+    openmp_include = "/opt/homebrew/opt/libomp/include"
+    openmp_lib = "/opt/homebrew/opt/libomp/lib"
+    openmp_compile_args = ['-Xpreprocessor', '-fopenmp']
+    openmp_link_args = ['-lomp']
+    include_dirs = ["QuantCpp", openmp_include]
+    library_dirs = [openmp_lib]
+elif is_linux:
+    # On Linux, OpenMP is built into GCC
+    openmp_compile_args = ['-fopenmp']
+    openmp_link_args = ['-fopenmp']
+    include_dirs = ["QuantCpp"]
+    library_dirs = []
+else:
+    raise RuntimeError(f"Unsupported platform: {platform.system()}")
+
+# Add optimization flags for both platforms
+openmp_compile_args += ['-O3', '-march=native', '-std=c++17']
 
 ext_modules = [
     Pybind11Extension(
@@ -12,8 +33,8 @@ ext_modules = [
         ["QuantCpp/Time2Image/binding.cpp",
          "QuantCpp/Time2Image/GramianAngularField.cpp",
          "QuantCpp/Time2Image/MarkovTransitionField.cpp"],
-        include_dirs=["QuantCpp", openmp_include],
-        library_dirs=[openmp_lib],
+        include_dirs=include_dirs,
+        library_dirs=library_dirs,
         extra_compile_args=openmp_compile_args,
         extra_link_args=openmp_link_args,
     ),
@@ -22,8 +43,8 @@ ext_modules = [
         "QuantCpp.Test._core",   
         ["QuantCpp/Test/binding.cpp",
          "QuantCpp/Test/test_func.cpp"],
-        include_dirs=["QuantCpp", openmp_include],
-        library_dirs=[openmp_lib],
+        include_dirs=include_dirs,
+        library_dirs=library_dirs,
         extra_compile_args=openmp_compile_args,
         extra_link_args=openmp_link_args,
     ),
