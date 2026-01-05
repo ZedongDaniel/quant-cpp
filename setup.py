@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 from pybind11.setup_helpers import Pybind11Extension, build_ext
 
 openmp_include = "/opt/homebrew/opt/libomp/include"
@@ -10,7 +10,8 @@ ext_modules = [
     Pybind11Extension(
         "QuantCpp.Time2Image._core",   
         ["QuantCpp/Time2Image/binding.cpp",
-         "QuantCpp/Time2Image/GramianAngularField.cpp"],
+         "QuantCpp/Time2Image/GramianAngularField.cpp",
+         "QuantCpp/Time2Image/MarkovTransitionField.cpp"],
         include_dirs=["QuantCpp", openmp_include],
         library_dirs=[openmp_lib],
         extra_compile_args=openmp_compile_args,
@@ -31,6 +32,7 @@ ext_modules = [
 setup(
     name="QuantCpp",
     version="0.0.1",
+    packages=find_packages(),
     ext_modules=ext_modules,
     cmdclass={"build_ext": build_ext},
     zip_safe=False,
