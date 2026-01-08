@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Dict
 from numpy.typing import NDArray
 
 def gasf(input: NDArray[np.float64]) -> NDArray[np.float64]:
@@ -230,3 +231,36 @@ def mtf_pipeline(
         MTF images of shape (image_size, image_size, n_timeseries)
     """
     ...
+
+
+
+def tril_stats(mat: NDArray[np.float64], mat_name: str) -> Dict[str, float]:
+    """
+    Compute statistics on lower triangular part of matrix.
+    
+    Parameters
+    ----------
+    mat : np.ndarray
+        2D numpy array of floats
+    mat_name : str
+        Prefix name for the output statistics keys
+        
+    Returns
+    -------
+    Dict[str, float]
+        Dictionary containing statistics:
+        - {mat_name}_mean: Mean of lower triangular elements
+        - {mat_name}_std: Standard deviation (sample, ddof=1)
+        - {mat_name}_abs_sum: Sum of absolute values
+        - {mat_name}_skew: Skewness
+        - {mat_name}_kurtosis: Excess kurtosis
+        - {mat_name}_gradient: Mean absolute difference between consecutive elements
+        - {mat_name}_gradient_energy: Sum of squared differences
+        - {mat_name}_energy: Mean squared value
+        - {mat_name}_pos_ratio: Ratio of positive elements
+    """
+    ...
+
+def diagonal_band_stats(mat: NDArray[np.float64], mat_name: str) -> Dict[str, float]: ...
+
+def diag_lag_stats(mat: NDArray[np.float64], mat_name: str) -> Dict[str, float]: ...

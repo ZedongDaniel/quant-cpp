@@ -8,4 +8,7 @@ __all__ = [
     'markov_transition_field',
     'aggregate_mtf',
     'flatten_mtf',
-    'mtf_pipeline']
+    'mtf_pipeline',
+    'tril_stats',
+    'diagonal_band_stats',
+    'diag_lag_stats']
