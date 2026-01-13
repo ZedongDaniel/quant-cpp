@@ -27,6 +27,8 @@ else:
 # Add optimization flags for both platforms
 openmp_compile_args += ['-O3', '-march=native', '-std=c++17']
 
+base_compile_args = ['-O3', '-march=native', '-std=c++17']
+
 ext_modules = [
     Pybind11Extension(
         "QuantCpp.Time2Image._core",   
@@ -38,6 +40,14 @@ ext_modules = [
         library_dirs=library_dirs,
         extra_compile_args=openmp_compile_args,
         extra_link_args=openmp_link_args,
+    ),
+
+    Pybind11Extension(
+        "QuantCpp.Regime._core",   
+        ["QuantCpp/Regime/binding.cpp",
+         "QuantCpp/Regime/MarkovTransitionMatrix.cpp",],
+        include_dirs=["QuantCpp"],
+        extra_compile_args=base_compile_args,
     ),
 
     Pybind11Extension(

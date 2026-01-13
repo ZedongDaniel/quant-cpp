@@ -58,6 +58,15 @@ def assert_metrics_close(cpp_result: dict, py_result: dict, *, rtol=1e-5, atol=1
                 f"  rtol={rtol}, atol={atol}"
             )
 
+def test_nan():
+    mat = np.full((100, 100), np.nan)
+
+    cpp_result = image.tril_stats(mat, "all_nan")
+
+    print(cpp_result)
+    print(type(cpp_result["all_nan_abs_sum"]))
+    print(np.isnan(cpp_result["all_nan_abs_sum"]))
+    
 def test_correctness():
     assert hasattr(image, "tril_stats"), "image.tril_stats not found"
 
@@ -139,5 +148,6 @@ def test_performance():
 
 
 if __name__ == "__main__":
-    test_correctness()
-    test_performance()
+    test_nan()
+    # test_correctness()
+    # test_performance()
